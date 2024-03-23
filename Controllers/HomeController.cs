@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Mission11_Marshall.Models;
 using System.Diagnostics;
 using Mission11_Marshall.Repositories;
-using Mission11_Marshall.Models;
 
 namespace Mission11_Marshall.Controllers
 {
@@ -17,16 +16,23 @@ namespace Mission11_Marshall.Controllers
             _bookRepository = bookRepository;
         }
 
-        public IActionResult Index(int page = 1)
+        public ActionResult Index(int? page)
         {
             const int pageSize = 10;
-            var books = _bookRepository.GetAllBooks()
-                                       .Skip((page - 1) * pageSize)
-                                       .Take(pageSize)
-                                       .ToList();
+            int currentPage = page ?? 1;
+
+            // Fetch the total count of books
+            int totalCount = _bookRepository.GetTotalCount();
+
+            // Fetch books for the current page
+            var books = _bookRepository.GetBooks(currentPage, pageSize);
+
+            ViewBag.TotalCount = totalCount;
+            ViewBag.CurrentPage = currentPage;
 
             return View(books);
         }
+
 
         public IActionResult Privacy()
         {

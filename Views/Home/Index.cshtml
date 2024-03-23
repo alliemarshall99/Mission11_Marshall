@@ -36,11 +36,13 @@
 
     <!-- Pagination -->
     <ul class="pagination">
-        @for (int i = 1; i <= Math.Ceiling((double)Model.Count / 10); i++)
+        @for (int i = 1; i <= Math.Ceiling((double)ViewBag.TotalCount / 10); i++)
         {
             <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                <a class="page-link" href="@Url.Action("Index", "Home", new { page = i })">@i</a>  <!-- Update the action and controller names -->
+                <a class="page-link" href="@Url.Action("Index", "Home", new { page = i })">@i</a>
             </li>
         }
     </ul>
+
+
 </div>
